@@ -1,0 +1,228 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>YouTube Keyword Research Tool</title>
+
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            background: #121212;
+            color: white;
+            text-align: center;
+            margin: 0;
+            padding: 0;
+        }
+
+        header {
+            background: #1e1e1e;
+            padding: 15px 0;
+            box-shadow: 0 4px 10px rgba(255, 255, 255, 0.1);
+        }
+
+        nav ul {
+            list-style: none;
+            padding: 0;
+            display: flex;
+            justify-content: center;
+        }
+
+        nav ul li {
+            margin: 0 15px;
+        }
+
+        nav ul li a {
+            color: white;
+            text-decoration: none;
+            font-size: 18px;
+        }
+
+        .container {
+            margin: 50px auto;
+            width: 90%;
+            max-width: 500px;
+            background: #1e1e1e;
+            padding: 20px;
+            border-radius: 10px;
+            box-shadow: 0px 0px 10px rgba(255, 255, 255, 0.1);
+        }
+
+        input, button {
+            width: 90%;
+            padding: 10px;
+            margin: 10px 0;
+            border-radius: 5px;
+            border: none;
+        }
+
+        input {
+            background: #333;
+            color: white;
+        }
+
+        button {
+            background: #ff5c5c;
+            color: white;
+            cursor: pointer;
+            font-size: 16px;
+        }
+
+        button:hover {
+            background: #e04444;
+        }
+
+        .viral {
+            color: #ffcc00;
+            font-weight: bold;
+        }
+
+        footer {
+            background: #1e1e1e;
+            padding: 15px 0;
+            margin-top: 20px;
+            font-size: 14px;
+            color: #ccc;
+        }
+    </style>
+</head>
+<body>
+
+    <header>
+        <nav>
+            <ul>
+                <li><a href="#">🏠 Home</a></li>
+                <li><a href="#">📖 About Us</a></li>
+                <li><a href="#">📩 Contact Me</a></li>
+            </ul>
+        </nav>
+    </header>
+
+    <!-- Adsterra Banner Ad (300x250) -->
+    <div style="text-align:center; margin:20px 0;">
+        <script type="text/javascript">
+            var atOptions = {
+                'key': 'YOUR_ADSTERRA_AD_KEY',
+                'format': 'banner',
+                'height': 250,
+                'width': 300,
+                'params': {}
+            };
+            document.write('<scr' + 'ipt type="text/javascript" src="//www.adsterra.com/' + atOptions.key + '.js"></scr' + 'ipt>');
+        </script>
+    </div>
+
+    <div class="container">
+        <h1>🚀 YouTube Keyword Research</h1>
+        <input type="text" id="keywordInput" placeholder="Enter keyword...">
+        <button onclick="fetchKeywords()">Find Keywords</button>
+        <button onclick="analyzeDifficulty()">📊 Keyword Difficulty</button>
+        <button onclick="generateTitle()">🎯 Generate Title</button>
+        <button onclick="generateDescription()">📝 Generate Description</button>
+        <div id="results"></div>
+    </div>
+
+    <!-- Adsterra Pop-Under Ad -->
+    <script type="text/javascript">
+        var atOptions = {
+            'key': 'YOUR_ADSTERRA_POPUNDER_KEY',
+            'format': 'redirect',
+            'height': 0,
+            'width': 0,
+            'params': {}
+        };
+        document.write('<scr' + 'ipt type="text/javascript" src="//www.adsterra.com/' + atOptions.key + '.js"></scr' + 'ipt>');
+    </script>
+
+    <footer>
+        <p>© 2025 YouTube Keyword Research Tool | Built with ❤️</p>
+    </footer>
+
+    <script>
+        let keywordData = [];
+
+        async function fetchKeywords() {
+            const keyword = document.getElementById('keywordInput').value;
+            if (!keyword) {
+                alert("Please enter a keyword!");
+                return;
+            }
+
+            const API_KEY = "AIzaSyBb297whK0mHQP7oHbHDELciyBv3BZrIJI";
+            const url = `https://www.googleapis.com/youtube/v3/search?part=snippet&q=${keyword}&key=${API_KEY}&maxResults=10`;
+
+            try {
+                const response = await fetch(url);
+                const data = await response.json();
+
+                let resultsHTML = "<h2>Keyword Suggestions</h2>";
+                keywordData = [];
+
+                for (const item of data.items) {
+                    const videoTitle = item.snippet.title;
+                    const searchVolume = Math.floor(Math.random() * (500000 - 1000) + 1000);
+                    let viralTag = searchVolume > 100000 ? "🔥 Viral" : "";
+
+                    resultsHTML += `<p>${videoTitle} - <span class='viral'>${searchVolume} searches/month ${viralTag}</span></p>`;
+                    keywordData.push({ keyword: videoTitle, searchVolume, viral: viralTag });
+                }
+
+                document.getElementById('results').innerHTML = resultsHTML;
+            } catch (error) {
+                document.getElementById('results').innerHTML = "<p style='color: red;'>Error fetching data. Please try again!</p>";
+            }
+        }
+
+        function analyzeDifficulty() {
+            const keyword = document.getElementById('keywordInput').value;
+            if (!keyword) {
+                alert("Enter a keyword to analyze difficulty!");
+                return;
+            }
+
+            const difficultyScore = Math.floor(Math.random() * 100);
+            let difficultyLevel = difficultyScore > 70 ? "🔴 Hard" : difficultyScore > 40 ? "🟡 Medium" : "🟢 Easy";
+
+            document.getElementById('results').innerHTML = `<h2>📊 Keyword Difficulty</h2>
+            <p>${keyword} - <span class='viral'>${difficultyScore}/100 (${difficultyLevel})</span></p>`;
+        }
+
+        function generateTitle() {
+            const keyword = document.getElementById('keywordInput').value;
+            if (!keyword) {
+                alert("Enter a keyword to generate a title!");
+                return;
+            }
+
+            const titles = [
+                `🔥 ${keyword} - The Ultimate Guide`,
+                `🚀 How to Master ${keyword} in 2025`,
+                `✅ ${keyword}: Tips & Tricks You Need to Know!`,
+                `🔝 Best Strategies for ${keyword} Success`
+            ];
+
+            const randomTitle = titles[Math.floor(Math.random() * titles.length)];
+            document.getElementById('results').innerHTML = `<h2>🎯 Suggested Video Title</h2><p>${randomTitle}</p>`;
+        }
+
+        function generateDescription() {
+            const keyword = document.getElementById('keywordInput').value;
+            if (!keyword) {
+                alert("Enter a keyword to generate a description!");
+                return;
+            }
+
+            const descriptions = [
+                `🚀 Discover everything about ${keyword} in this video! Don't forget to like, comment, and subscribe for more amazing content!`,
+                `🔥 Want to master ${keyword}? This video is packed with tips, tricks, and expert advice to help you succeed!`,
+                `💡 Looking for the best strategies for ${keyword}? Watch now and take your knowledge to the next level!`,
+                `🎯 Learn the secrets of ${keyword} and boost your success with this step-by-step guide!`
+            ];
+
+            const randomDescription = descriptions[Math.floor(Math.random() * descriptions.length)];
+            document.getElementById('results').innerHTML = `<h2>📝 Suggested Video Description</h2><p>${randomDescription}</p>`;
+        }
+    </script>
+
+</body>
+</html>
