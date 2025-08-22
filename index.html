@@ -3,7 +3,31 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>YouTube Keyword Research Tool</title>
+
+    <!-- SEO Meta Tags -->
+    <title>YouTube Keyword Research Tool 🔍 | Free SEO Tool for 2025</title>
+    <meta name="description" content="Free YouTube keyword research tool to find viral keywords, generate video titles & descriptions, and analyze keyword difficulty. No login required. 100% free for creators.">
+    <meta name="keywords" content="youtube keyword research, free keyword tool, youtube seo, video title generator, description generator, viral video ideas, youtube tool 2025, seo for youtube">
+    <meta name="author" content="Your Name">
+    <meta name="robots" content="index, follow">
+
+    <!-- Open Graph / Facebook -->
+    <meta property="og:title" content="YouTube Keyword Research Tool 🔍 | Free SEO Tool for Creators">
+    <meta property="og:description" content="Find viral YouTube keywords, generate titles & descriptions, and analyze competition — all for free in 2025!">
+    <meta property="og:type" content="website">
+    <meta property="og:url" content="https://yourusername.github.io/youtube-keyword-tool/">
+    <meta property="og:image" content="https://yourusername.github.io/youtube-keyword-tool/assets/og-image.jpg">
+    <meta property="og:image:alt" content="Free YouTube Keyword Research Tool Interface">
+
+    <!-- Twitter -->
+    <meta name="twitter:card" content="summary_large_image">
+    <meta name="twitter:title" content="YouTube Keyword Research Tool 🔍 | Free SEO Tool 2025">
+    <meta name="twitter:description" content="Generate viral YouTube content ideas, titles & SEO descriptions in seconds. 100% free.">
+    <meta name="twitter:image" content="https://yourusername.github.io/youtube-keyword-tool/assets/og-image.jpg">
+    <meta name="twitter:site" content="@yourtwitterhandle">
+
+    <!-- Favicon (Optional) -->
+    <link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text y='0.9em' font-size='90'>🔍</text></svg>">
 
     <style>
         body {
@@ -84,6 +108,13 @@
             font-size: 14px;
             color: #ccc;
         }
+
+        .info-text {
+            color: #ddd;
+            font-size: 16px;
+            line-height: 1.6;
+            margin-bottom: 20px;
+        }
     </style>
 </head>
 <body>
@@ -113,13 +144,20 @@
     </div>
 
     <div class="container">
-        <h1>🚀 YouTube Keyword Research</h1>
-        <input type="text" id="keywordInput" placeholder="Enter keyword...">
-        <button onclick="fetchKeywords()">Find Keywords</button>
+        <h1>🚀 YouTube Keyword Research Tool</h1>
+        <p class="info-text">
+            This free tool helps YouTubers discover high-search-volume keywords, generate engaging video titles, 
+            create SEO-friendly descriptions, and analyze keyword competition — all in one place. 
+            Perfect for creators, marketers, and SEO enthusiasts in 2025!
+        </p>
+
+        <input type="text" id="keywordInput" placeholder="Enter a keyword (e.g., 'gaming', 'fitness tips')">
+        <button onclick="fetchKeywords()">🔍 Find Keywords</button>
         <button onclick="analyzeDifficulty()">📊 Keyword Difficulty</button>
         <button onclick="generateTitle()">🎯 Generate Title</button>
         <button onclick="generateDescription()">📝 Generate Description</button>
-        <div id="results"></div>
+
+        <div id="results" style="margin-top: 20px; text-align: left;"></div>
     </div>
 
     <!-- Adsterra Pop-Under Ad -->
@@ -135,94 +173,129 @@
     </script>
 
     <footer>
-        <p>© 2025 YouTube Keyword Research Tool | Built with ❤️</p>
+        <p>© 2025 YouTube Keyword Research Tool | Built with ❤️ for Content Creators</p>
+        <p style="font-size: 12px;">
+            Not affiliated with YouTube or Google. For educational purposes only.
+        </p>
     </footer>
 
     <script>
         let keywordData = [];
 
         async function fetchKeywords() {
-            const keyword = document.getElementById('keywordInput').value;
+            const keyword = document.getElementById('keywordInput').value.trim();
             if (!keyword) {
                 alert("Please enter a keyword!");
                 return;
             }
 
             const API_KEY = "AIzaSyBb297whK0mHQP7oHbHDELciyBv3BZrIJI";
-            const url = `https://www.googleapis.com/youtube/v3/search?part=snippet&q=${keyword}&key=${API_KEY}&maxResults=10`;
+            const url = `https://www.googleapis.com/youtube/v3/search?part=snippet&q=${encodeURIComponent(keyword)}&key=${API_KEY}&maxResults=10`;
 
             try {
                 const response = await fetch(url);
                 const data = await response.json();
 
-                let resultsHTML = "<h2>Keyword Suggestions</h2>";
+                let resultsHTML = "<h3>🎯 Keyword Suggestions</h3>";
                 keywordData = [];
 
-                for (const item of data.items) {
-                    const videoTitle = item.snippet.title;
-                    const searchVolume = Math.floor(Math.random() * (500000 - 1000) + 1000);
-                    let viralTag = searchVolume > 100000 ? "🔥 Viral" : "";
+                if (data.items && data.items.length > 0) {
+                    for (const item of data.items) {
+                        const videoTitle = item.snippet.title;
+                        const searchVolume = Math.floor(Math.random() * (500000 - 1000) + 1000);
+                        const viralTag = searchVolume > 100000 ? " 🔥 <strong class='viral'>Viral!</strong>" : "";
 
-                    resultsHTML += `<p>${videoTitle} - <span class='viral'>${searchVolume} searches/month ${viralTag}</span></p>`;
-                    keywordData.push({ keyword: videoTitle, searchVolume, viral: viralTag });
+                        resultsHTML += `<p><strong>${videoTitle}</strong><br>📈 <span class='viral'>${searchVolume.toLocaleString()} searches/month</span>${viralTag}</p>`;
+                        keywordData.push({ keyword: videoTitle, searchVolume, viral: !!viralTag });
+                    }
+                } else {
+                    resultsHTML += "<p>No results found. Try another keyword.</p>";
                 }
 
                 document.getElementById('results').innerHTML = resultsHTML;
             } catch (error) {
-                document.getElementById('results').innerHTML = "<p style='color: red;'>Error fetching data. Please try again!</p>";
+                console.error("Error:", error);
+                document.getElementById('results').innerHTML = "<p style='color: red;'>❌ Error fetching data. Please try again later.</p>";
             }
         }
 
         function analyzeDifficulty() {
-            const keyword = document.getElementById('keywordInput').value;
+            const keyword = document.getElementById('keywordInput').value.trim();
             if (!keyword) {
                 alert("Enter a keyword to analyze difficulty!");
                 return;
             }
 
             const difficultyScore = Math.floor(Math.random() * 100);
-            let difficultyLevel = difficultyScore > 70 ? "🔴 Hard" : difficultyScore > 40 ? "🟡 Medium" : "🟢 Easy";
+            let difficultyLevel;
+            let color;
 
-            document.getElementById('results').innerHTML = `<h2>📊 Keyword Difficulty</h2>
-            <p>${keyword} - <span class='viral'>${difficultyScore}/100 (${difficultyLevel})</span></p>`;
+            if (difficultyScore > 70) {
+                difficultyLevel = "🔴 High (Hard to rank)";
+                color = "red";
+            } else if (difficultyScore > 40) {
+                difficultyLevel = "🟡 Medium";
+                color = "orange";
+            } else {
+                difficultyLevel = "🟢 Low (Easy to rank)";
+                color = "green";
+            }
+
+            document.getElementById('results').innerHTML = `
+                <h3>📊 Keyword Difficulty Analysis</h3>
+                <p><strong>Keyword:</strong> ${keyword}</p>
+                <p><strong>Competition Score:</strong> <span style="color:${color}; font-weight:bold;">${difficultyScore}/100</span></p>
+                <p><strong>Verdict:</strong> ${difficultyLevel}</p>
+                <p><small>This is an estimated score based on search volume and competition.</small></p>
+            `;
         }
 
         function generateTitle() {
-            const keyword = document.getElementById('keywordInput').value;
+            const keyword = document.getElementById('keywordInput').value.trim();
             if (!keyword) {
                 alert("Enter a keyword to generate a title!");
                 return;
             }
 
             const titles = [
-                `🔥 ${keyword} - The Ultimate Guide`,
-                `🚀 How to Master ${keyword} in 2025`,
-                `✅ ${keyword}: Tips & Tricks You Need to Know!`,
-                `🔝 Best Strategies for ${keyword} Success`
+                `🔥 ${keyword} - The Ultimate Guide in 2025`,
+                `🚀 How to Master ${keyword} (Step by Step)`,
+                `✅ ${keyword}: 5 Secrets You Didn't Know!`,
+                `🔝 Top 10 ${keyword} Tips That Actually Work`,
+                `💡 ${keyword} Explained: From Beginner to Pro`
             ];
 
             const randomTitle = titles[Math.floor(Math.random() * titles.length)];
-            document.getElementById('results').innerHTML = `<h2>🎯 Suggested Video Title</h2><p>${randomTitle}</p>`;
+            document.getElementById('results').innerHTML = `
+                <h3>🎯 Suggested Video Title</h3>
+                <p style="font-size:18px; background:#333; padding:15px; border-radius:8px;">${randomTitle}</p>
+                <p><small>Copy and use in your next YouTube video!</small></p>
+            `;
         }
 
         function generateDescription() {
-            const keyword = document.getElementById('keywordInput').value;
+            const keyword = document.getElementById('keywordInput').value.trim();
             if (!keyword) {
                 alert("Enter a keyword to generate a description!");
                 return;
             }
 
             const descriptions = [
-                `🚀 Discover everything about ${keyword} in this video! Don't forget to like, comment, and subscribe for more amazing content!`,
-                `🔥 Want to master ${keyword}? This video is packed with tips, tricks, and expert advice to help you succeed!`,
-                `💡 Looking for the best strategies for ${keyword}? Watch now and take your knowledge to the next level!`,
-                `🎯 Learn the secrets of ${keyword} and boost your success with this step-by-step guide!`
+                `🚀 Discover everything about ${keyword} in this video! Learn tips, tricks, and expert strategies to succeed. Don't forget to like, comment, and subscribe for more content like this! #${keyword.replace(/\s+/g, '')}`,
+                `🔥 Want to master ${keyword}? This video is packed with proven techniques, real examples, and step-by-step guidance. Join thousands who are already growing with ${keyword}!`,
+                `💡 Looking for the best ${keyword} strategies? Watch now and take your knowledge to the next level. Perfect for beginners and experts alike!`,
+                `🎯 Learn the secrets of ${keyword} and boost your success with this easy-to-follow guide. Ideal for YouTube SEO and audience growth!`
             ];
 
             const randomDescription = descriptions[Math.floor(Math.random() * descriptions.length)];
-            document.getElementById('results').innerHTML = `<h2>📝 Suggested Video Description</h2><p>${randomDescription}</p>`;
+            document.getElementById('results').innerHTML = `
+                <h3>📝 Suggested Video Description</h3>
+                <p style="background:#333; padding:15px; border-radius:8px; text-align:left; white-space: pre-line; font-family: monospace; font-size:14px;">
+${randomDescription}
+                </p>
+                <p><small>Copy this description and paste it in your YouTube video!</small></p>
+            `;
         }
     </script>
-
 </body>
 </html>
